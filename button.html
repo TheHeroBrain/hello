@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Don't Press</title>
+    <style>
+      body {
+        background-color: black;
+      }
+      
+      #button {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 150px;
+        height: 40px;
+        line-height: 40px;
+        font-size: 20px;
+        color: red;
+        text-transform: uppercase;
+		font-family: 'Courier New', Courier, monospace;
+        text-align: center;
+        border: 2px solid red;
+        border-radius: 0px;
+        cursor: pointer;
+        z-index: 1;
+      }
+      
+      #image {
+        display: none;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        z-index: 2;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="button" onclick="playSound(); showImage(); this.style.display='none'">Don't Press</div>
+    <img id="image" src="carte religieuse europe.png"">
+    <script>
+      function playSound() {
+        var audio = new Audio('Escapism.m4a');
+        audio.play();
+        document.body.style.cursor = "none";
+      }
+      
+      function showImage() {
+        var image = document.getElementById("image");
+        image.style.display = "block";
+        setTimeout(window.close, 20000);
+      }
+    </script>
+  </body>
+</html>
