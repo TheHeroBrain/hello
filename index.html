@@ -5,6 +5,8 @@
     <style>
       body {
         background-color: black;
+        margin: 0; /* Remove default margin */
+        overflow: hidden; /* Prevent scrollbars */
       }
       
       #button {
@@ -34,16 +36,51 @@
         transform: translate(-50%, -50%);
         z-index: 2;
       }
+
+      .tooth {
+        position: absolute;
+        width: 80px; /* Adjust the size */
+        height: 80px; /* Adjust the size */
+        background-image: url('tooth.png');
+        background-size: cover;
+        z-index: 3;
+        transform-origin: center center;
+      }
     </style>
   </head>
   <body>
-    <div id="button" onclick="playSound(); showImage(); this.style.display='none'">Don't Press</div>
-    <img id="image" src="carte religieuse europe.png">
+    <div id="button" onclick="playSound(); showImage();">Don't Press</div>
+    <img id="image" src="enter.jpeg">
     <script>
+      var audio;
+      var toothCounter = 1;
+
       function playSound() {
-        var audio = new Audio('Escapism.m4a');
+        audio = new Audio('Escapism.m4a');
         audio.play();
         document.body.style.cursor = "none";
+
+        // Slow down the sound every 2 seconds
+        setInterval(function () {
+          if (audio.playbackRate > 0) {
+            audio.playbackRate -= 0.2;
+          }
+        }, 2000);
+
+        // Show teeth every 0.1 seconds
+        setInterval(function () {
+          showTooth();
+        }, 100);
+
+        // Multiply the number of teeth every 5 seconds
+        setInterval(function () {
+          toothCounter *= 2;
+        }, 5000);
+
+        // Change image after 19.9 seconds
+        setTimeout(function () {
+          document.getElementById("image").src = "enter2.jpeg";
+        }, 19900);
       }
       
       function showImage() {
@@ -51,39 +88,34 @@
         image.style.width = "100%";
         image.style.height = "100%";
         image.style.display = "block";
-        
-        // Create a red overlay div
-        var overlay = document.createElement("div");
-        overlay.style.position = "fixed";
-        overlay.style.top = "0";
-        overlay.style.left = "0";
-        overlay.style.width = "100%";
-        overlay.style.height = "100%";
-        overlay.style.background = "red";
-        overlay.style.opacity = "0";
-        
-        // Append the overlay to the body
-        document.body.appendChild(overlay);
 
-        function updateOpacity() {
-          var currentOpacity = parseFloat(overlay.style.opacity);
-          overlay.style.opacity = (currentOpacity + 0.01).toFixed(2);
-          if (currentOpacity < 1) {
-            // Continue updating opacity
-            requestAnimationFrame(updateOpacity);
-          }
-        }
-
-        // Start the opacity update process
-        updateOpacity();
-
-        // Close the window or hide the image and overlay after a delay (20 seconds in this case)
-        setTimeout(function() {
+        // Set a timer to close the window after a delay (20 seconds in this case)
+        setTimeout(function () {
           window.close();
-          // Alternatively, you can use the following lines to hide the image and overlay
-          // image.style.display = "none";
-          // overlay.style.display = "none";
         }, 20000);
+      }
+
+      function showTooth() {
+        // Create a number of teeth equal to toothCounter
+        for (let i = 0; i < toothCounter; i++) {
+          var tooth = document.createElement("div");
+          tooth.className = "tooth";
+          
+          // Randomly position and rotate the tooth within the visible area of the screen
+          var viewportWidth = window.innerWidth || document.documentElement.clientWidth;
+          var viewportHeight = window.innerHeight || document.documentElement.clientHeight;
+
+          var randomX = Math.floor(Math.random() * (viewportWidth - tooth.offsetWidth));
+          var randomY = Math.floor(Math.random() * (viewportHeight - tooth.offsetHeight));
+          var randomRotation = Math.floor(Math.random() * 360); // Random rotation angle
+
+          tooth.style.left = randomX + "px";
+          tooth.style.top = randomY + "px";
+          tooth.style.transform = "rotate(" + randomRotation + "deg)";
+
+          // Add the tooth to the document
+          document.body.appendChild(tooth);
+        }
       }
     </script>
   </body>
