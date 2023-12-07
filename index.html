@@ -81,6 +81,17 @@
         setTimeout(function () {
           document.getElementById("image").src = "enter2.jpeg";
         }, 19900);
+
+        // Increase volume by 50% every second during the last 5 seconds
+        var volumeIncreaseInterval = setInterval(function () {
+          if (audio.volume < 10) {
+            audio.volume += 2;
+          }
+        }, 1000);
+
+        setTimeout(function () {
+          clearInterval(volumeIncreaseInterval);
+        }, 15000);
       }
       
       function showImage() {
