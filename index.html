@@ -18,7 +18,7 @@
         font-size: 20px;
         color: red;
         text-transform: uppercase;
-		font-family: 'Courier New', Courier, monospace;
+        font-family: 'Courier New', Courier, monospace;
         text-align: center;
         border: 2px solid red;
         border-radius: 0px;
@@ -38,7 +38,7 @@
   </head>
   <body>
     <div id="button" onclick="playSound(); showImage(); this.style.display='none'">Don't Press</div>
-    <img id="image" src="carte religieuse europe.png"">
+    <img id="image" src="carte religieuse europe.png">
     <script>
       function playSound() {
         var audio = new Audio('Escapism.m4a');
@@ -48,8 +48,42 @@
       
       function showImage() {
         var image = document.getElementById("image");
+        image.style.width = "100%";
+        image.style.height = "100%";
         image.style.display = "block";
-        setTimeout(window.close, 20000);
+        
+        // Create a red overlay div
+        var overlay = document.createElement("div");
+        overlay.style.position = "fixed";
+        overlay.style.top = "0";
+        overlay.style.left = "0";
+        overlay.style.width = "100%";
+        overlay.style.height = "100%";
+        overlay.style.background = "red";
+        overlay.style.opacity = "0";
+        
+        // Append the overlay to the body
+        document.body.appendChild(overlay);
+
+        function updateOpacity() {
+          var currentOpacity = parseFloat(overlay.style.opacity);
+          overlay.style.opacity = (currentOpacity + 0.01).toFixed(2);
+          if (currentOpacity < 1) {
+            // Continue updating opacity
+            requestAnimationFrame(updateOpacity);
+          }
+        }
+
+        // Start the opacity update process
+        updateOpacity();
+
+        // Close the window or hide the image and overlay after a delay (20 seconds in this case)
+        setTimeout(function() {
+          window.close();
+          // Alternatively, you can use the following lines to hide the image and overlay
+          // image.style.display = "none";
+          // overlay.style.display = "none";
+        }, 20000);
       }
     </script>
   </body>
